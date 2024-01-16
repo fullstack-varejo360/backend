@@ -34,10 +34,10 @@ public class ProductService {
         }
     }
 
-    public Product createProduct(final ProductDto productData) {
+    public Product createProduct(final ProductDto productData, Long userId) {
         checkCodeAndName(productData);
 
-        final User foundUser = userRepository.findById(productData.getUser_id()).orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+        final User foundUser = userRepository.findById(userId).orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
         final Product newProduct = new Product(foundUser, productData.getCode(), productData.getName());
 
@@ -59,12 +59,12 @@ public class ProductService {
 
     }
 
-    public Product updateProduct(final ProductDto productData, final long id) {
+    public Product updateProduct(final ProductDto productData, final long id, final long userId) {
         checkCodeAndName(productData);
 
         final Product foundProduct = productRepository.findById(id).orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
 
-        final User foundUser = userRepository.findById(productData.getUser_id()).orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+        final User foundUser = userRepository.findById(userId).orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
         foundProduct.setUser(foundUser);
         foundProduct.setCode(productData.getCode());

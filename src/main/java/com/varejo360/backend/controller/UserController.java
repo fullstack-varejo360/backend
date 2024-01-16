@@ -6,6 +6,7 @@ import com.varejo360.backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class UserController {
     //setar rota de criação
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody final UserDto userData){
+        userData.setPassword(new BCryptPasswordEncoder().encode(userData.getPassword()));
         User createdUser = userService.createUser(userData);
 
         return  new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
@@ -49,6 +51,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@Valid @RequestBody final UserDto userData, @PathVariable final String id) {
+        userData.setPassword(new BCryptPasswordEncoder().encode(userData.getPassword()));
         //convertendo id (String) para Long
         final User updatedUser = userService.updateUser(userData, Long.parseLong(id));
 

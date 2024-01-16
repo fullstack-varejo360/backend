@@ -1,15 +1,18 @@
 package com.varejo360.backend.controller;
 
 import com.varejo360.backend.dto.ProductDto;
+import com.varejo360.backend.infra.security.TokenService;
 import com.varejo360.backend.model.Product;
 import com.varejo360.backend.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 
 
 import java.util.List;
@@ -19,13 +22,19 @@ import java.util.List;
 public class ProductController {
     final ProductService productService;
 
+    @Autowired
+    private TokenService tokenService;
+
     public ProductController(ProductService productService){
         this.productService = productService;
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@Valid @RequestBody final ProductDto productData) throws Exception {
-        final Product  createdProduct = productService.createProduct(productData);
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody final ProductDto productData, @RequestHeader("Authorization") String token) throws Exception {
+        token = token.replace("Bearer ", "");
+        Long userId = tokenService.getUserIdFromToken(token);
+
+        final Product  createdProduct = productService.createProduct(productData,userId);
 
         return new ResponseEntity<Product>(createdProduct, HttpStatus.CREATED);
     }
@@ -55,9 +64,11 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@Valid @RequestBody final ProductDto productData, @PathVariable final String id) {
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody final ProductDto productData, @PathVariable final String id, @RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        Long userId = tokenService.getUserIdFromToken(token);
         //convertendo id (String) para Long
-        final Product updatedProduct = productService.updateProduct(productData, Long.parseLong(id));
+        final Product updatedProduct = productService.updateProduct(productData, Long.parseLong(id), userId);
 
         return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 
