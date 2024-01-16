@@ -9,6 +9,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 
@@ -29,10 +33,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public  ResponseEntity<List<Product>> readProducts(){
-        final List<Product> allProducts = productService.readProducts();
-
-        return new ResponseEntity<List<Product>>(allProducts, HttpStatus.OK);
+    public ResponseEntity<Page<Product>> readProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<Product> productsPage = productService.readProducts(page, size);
+        return new ResponseEntity<>(productsPage, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
