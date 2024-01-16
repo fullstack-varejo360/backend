@@ -1,9 +1,7 @@
 package com.varejo360.backend.controller;
 
 import com.varejo360.backend.dto.ProductDto;
-import com.varejo360.backend.dto.UserDto;
 import com.varejo360.backend.model.Product;
-import com.varejo360.backend.model.User;
 import com.varejo360.backend.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -33,10 +31,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Product>> readProducts(
+    public  ResponseEntity<List<Product>> readProducts(){
+        final List<Product> allProducts = productService.readProducts();
+
+        return new ResponseEntity<List<Product>>(allProducts, HttpStatus.OK);
+    }
+
+    @GetMapping("/pag")
+    public ResponseEntity<Page<Product>> listProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<Product> productsPage = productService.readProducts(page, size);
+        Page<Product> productsPage = productService.listProducts(page, size);
         return new ResponseEntity<>(productsPage, HttpStatus.OK);
     }
 
