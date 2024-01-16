@@ -1,10 +1,14 @@
 package com.varejo360.backend.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -56,6 +60,41 @@ public class User {
         this.password = password;
     }
 
+    //o spring vai consultar as roles que o usuário tem para autorização
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    //aqui pega o "login"
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    //se a conta do usuário não está expirado
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    //se o usuário não está bloqueado
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    //se a credencial não está expirada
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    //se o usuário está ativo
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
     @Override
     public String toString() {
         return "User{" +
