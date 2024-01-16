@@ -3,6 +3,7 @@ package com.varejo360.backend.controller;
 import com.varejo360.backend.dto.UserDto;
 import com.varejo360.backend.model.User;
 import com.varejo360.backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class UserController {
 
     //setar rota de criação
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody final UserDto userData){
+    public ResponseEntity<User> createUser(@Valid @RequestBody final UserDto userData){
         User createdUser = userService.createUser(userData);
 
         return  new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> retrieveUser(@PathVariable final String id) throws Exception {
+    public ResponseEntity<User> retrieveUser(@PathVariable final String id) {
 
         final User user = userService.retrieveUser(Long.parseLong(id));
 
@@ -46,8 +47,8 @@ public class UserController {
 
     }
 
-    @PutMapping("/{id}")                                                    //aqui sugere (throws Exception) por conta do service
-    public ResponseEntity<User> updateUser(@RequestBody final UserDto userData, @PathVariable final String id) throws Exception {
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@Valid @RequestBody final UserDto userData, @PathVariable final String id) {
         //convertendo id (String) para Long
         final User updatedUser = userService.updateUser(userData, Long.parseLong(id));
 
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable final String id) throws Exception {
+    public ResponseEntity<Void> deleteUser(@PathVariable final String id) {
 
         userService.deleteUser(Long.parseLong(id));
 

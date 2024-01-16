@@ -4,16 +4,18 @@ import com.varejo360.backend.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 public class ProductDto {
-
+    @NotNull(message = "Value can not be null")
     private Long user_id;
 
-
+    @NotNull(message = "Value can not be null")
     private long code;
 
-
+    @NotNull(message = "Value can not be null")
     private String name;
+
 
     public Long getUser_id() {
         return user_id;

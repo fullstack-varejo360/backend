@@ -5,6 +5,7 @@ import com.varejo360.backend.dto.UserDto;
 import com.varejo360.backend.model.Product;
 import com.varejo360.backend.model.User;
 import com.varejo360.backend.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody final ProductDto productData) throws Exception {
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody final ProductDto productData) throws Exception {
         final Product  createdProduct = productService.createProduct(productData);
 
         return new ResponseEntity<Product>(createdProduct, HttpStatus.CREATED);
@@ -35,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> retrieveProduct(@PathVariable final String id) throws Exception {
+    public ResponseEntity<Product> retrieveProduct(@PathVariable final String id) {
 
         final Product product = productService.retrieveProduct(Long.parseLong(id));
 
@@ -43,8 +44,8 @@ public class ProductController {
 
     }
 
-    @PutMapping("/{id}")                                                    //aqui sugere (throws Exception) por conta do service
-    public ResponseEntity<Product> updateProduct(@RequestBody final ProductDto productData, @PathVariable final String id) throws Exception {
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody final ProductDto productData, @PathVariable final String id) {
         //convertendo id (String) para Long
         final Product updatedProduct = productService.updateProduct(productData, Long.parseLong(id));
 
@@ -53,7 +54,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable final String id) throws Exception {
+    public ResponseEntity<Void> deleteProduct(@PathVariable final String id) {
 
         productService.deleteProduct(Long.parseLong(id));
 
