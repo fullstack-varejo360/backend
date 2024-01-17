@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/product")
 public class ProductController {
     final ProductService productService;
@@ -49,8 +50,10 @@ public class ProductController {
     @GetMapping("/pag")
     public ResponseEntity<Page<Product>> listProducts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<Product> productsPage = productService.listProducts(page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+        Page<Product> productsPage = productService.listProducts(page, size, sortField, sortDir);
         return new ResponseEntity<>(productsPage, HttpStatus.OK);
     }
 

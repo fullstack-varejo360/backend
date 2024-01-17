@@ -7,6 +7,7 @@ import com.varejo360.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 
 @Service
@@ -29,6 +30,10 @@ public class UserService {
 
     public List<User> readUsers() {
         return userRepository.findAll();
+    }
+
+    public User getProfile(final long id) {
+        return userRepository.findById(id).orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
     }
 
     //(throws Exception) isso é necessário pelo "new Exception

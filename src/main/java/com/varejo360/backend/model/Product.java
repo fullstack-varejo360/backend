@@ -9,7 +9,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  long id;
 
-    @ManyToOne
+
     @JoinColumn(nullable = false, referencedColumnName = "id")
     private User user;
 

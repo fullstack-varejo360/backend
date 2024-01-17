@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -46,8 +47,10 @@ public class ProductService {
 
     public List<Product> readProducts() {return productRepository.findAll();};
 
-    public Page<Product> listProducts(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Product> listProducts(int page, int size, String sortField, String sortDir) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(page, size,sort);
         return productRepository.findAll(pageable);
     }
 
