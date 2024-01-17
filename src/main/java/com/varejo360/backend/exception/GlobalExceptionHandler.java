@@ -1,6 +1,7 @@
 package com.varejo360.backend.exception;
 
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -47,6 +48,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+
     //tratar AppException
     @ExceptionHandler({AppException.class})
     public ResponseEntity<Object> handleAppException(final AppException ex) {
@@ -70,4 +72,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return  new ResponseEntity<>(returnObject, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleForeignKeyViolation(DataIntegrityViolationException ex) {
+        final HashMap<String, String> returnObject = new HashMap<>();
+        String message = "The operation could not be completed due to a database integrity constraint.";
+
+        // Verificar a causa raiz para fornecer uma mensagem mais específica
+        if (ex.getCause() != null && ex.getCause().getCause() != null) {
+            Throwable rootCause = ex.getCause().getCause();
+            if (rootCause.getMessage().contains("violates foreign key constraint")) {
+                message = "It is not possible to update or delete the record: it is being referenced by another table.";
+            }
+        }
+
+        returnObject.put("message", message);
+
+        // Log da exceção para fins de depuração
+        System.out.println(ex.getMessage());
+
+        return new ResponseEntity<>(returnObject, HttpStatus.CONFLICT);
+    }
+
 }

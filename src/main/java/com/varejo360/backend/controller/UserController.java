@@ -1,9 +1,11 @@
 package com.varejo360.backend.controller;
 
 import com.varejo360.backend.dto.UserDto;
+import com.varejo360.backend.infra.security.TokenService;
 import com.varejo360.backend.model.User;
 import com.varejo360.backend.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,11 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/users")
 public class UserController {
     //conectar o serviço que a gente criou
     private final UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
 
     //constructor
     public UserController(UserService userService) {
@@ -38,6 +44,17 @@ public class UserController {
         final List<User> allUsers = userService.readUsers();
 
         return new ResponseEntity<List<User>>(allUsers, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping("/profile")
+    public ResponseEntity<User> getProfile(@RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        Long userId = tokenService.getUserIdFromToken(token);
+        final User user = userService.getProfile(userId);
+
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+
     }
 
     @GetMapping("/{id}")
