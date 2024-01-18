@@ -1,6 +1,7 @@
 package com.varejo360.backend.controller;
 
 import com.varejo360.backend.dto.ProductDto;
+import com.varejo360.backend.dto.ProductUpdateDto;
 import com.varejo360.backend.infra.security.TokenService;
 import com.varejo360.backend.model.Product;
 import com.varejo360.backend.service.ProductService;
@@ -66,8 +67,9 @@ public class ProductController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@Valid @RequestBody final ProductDto productData, @PathVariable final String id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody final ProductUpdateDto productData, @PathVariable final String id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         Long userId = tokenService.getUserIdFromToken(token);
         //convertendo id (String) para Long

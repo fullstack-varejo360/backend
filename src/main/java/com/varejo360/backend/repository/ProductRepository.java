@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    boolean existsProductByCode(final Long code);
+    boolean existsProductByCode(final String code);
 
     boolean existsProductByName(final String name);
 

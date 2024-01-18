@@ -1,6 +1,7 @@
 package com.varejo360.backend.service;
 
 import com.varejo360.backend.dto.ProductDto;
+import com.varejo360.backend.dto.ProductUpdateDto;
 import com.varejo360.backend.exception.AppException;
 import com.varejo360.backend.model.Product;
 import com.varejo360.backend.model.User;
@@ -62,8 +63,8 @@ public class ProductService {
 
     }
 
-    public Product updateProduct(final ProductDto productData, final long id, final long userId) {
-        checkCodeAndName(productData);
+    public Product updateProduct(final ProductUpdateDto productData, final long id, final long userId) {
+//        checkCodeAndName(productData);
 
         final Product foundProduct = productRepository.findById(id).orElseThrow(() -> new AppException("Product not found", HttpStatus.NOT_FOUND));
 
