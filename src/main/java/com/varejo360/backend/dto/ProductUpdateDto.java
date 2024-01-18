@@ -2,14 +2,14 @@ package com.varejo360.backend.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public class ProductDto {
+public class ProductUpdateDto {
 //    @NotNull(message = "Value can not be null")
 //    private Long user_id;
 
-    @NotNull(message = "Value can not be null")
+
     private String code;
 
-    @NotNull(message = "Value can not be null")
+
     private String name;
 
 

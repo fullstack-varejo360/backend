@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize->authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir solicitações preflight OPTIONS
+                        .requestMatchers(HttpMethod.OPTIONS, "/product").permitAll()
                         .requestMatchers(HttpMethod.POST,"/product").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/product").authenticated()
                         .requestMatchers(HttpMethod.DELETE,"/product").authenticated()

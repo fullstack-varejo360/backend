@@ -14,7 +14,7 @@ public class Product {
     private User user;
 
     @Column(nullable = false, unique = true)
-    private long code;
+    private String code;
 
     @Column(length = 30, nullable = false, unique = true)
     private String name;
@@ -23,7 +23,7 @@ public class Product {
     public Product(){
     }
 
-    public Product(User user, long code, String name) {
+    public Product(User user, String code, String name) {
         this.user = user;
         this.code = code;
         this.name = name;
@@ -42,11 +42,11 @@ public class Product {
         this.user = user;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
