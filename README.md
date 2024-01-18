@@ -42,3 +42,7 @@ Este comando compila e executa a aplicação diretamente. É útil durante o des
 ```bash
 mvn spring-boot:run
 ```
+
+# Observação IMPORTANTE
+
+O CORS está configurado para requisições de origem `http://localhost:5173` e `http://localhost:3000`
