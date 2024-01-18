@@ -45,4 +45,4 @@ mvn spring-boot:run
 
 # Observação IMPORTANTE
 
-O CORS está configurado para requisições de origem `http://localhost:5173`
+O CORS está configurado para requisições de origem `http://localhost:5173` e `http://localhost:3000`
