@@ -19,7 +19,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173","http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:5173","http://localhost:3000","https://frontend-iota-eight-62.vercel.app/"})
 @RequestMapping("/product")
 public class ProductController {
     final ProductService productService;
@@ -67,7 +67,7 @@ public class ProductController {
 
     }
 
-    @CrossOrigin(origins = {"http://localhost:5173","http://localhost:3000"})
+    @CrossOrigin(origins = {"http://localhost:5173","http://localhost:3000","https://frontend-iota-eight-62.vercel.app/"})
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@Valid @RequestBody final ProductUpdateDto productData, @PathVariable final String id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
